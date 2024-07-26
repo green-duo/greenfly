@@ -92,6 +92,7 @@ public class google extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
                     FirebaseUser user = mAuth.getCurrentUser();
                     User users = new User();
                     users.setUserId(user.getUid());
@@ -99,6 +100,8 @@ public class google extends AppCompatActivity {
                     users.setProfile(user.getPhotoUrl().toString());
                     database.getReference().child("Users").child(user.getUid()).setValue(users);
                     Intent intent = new Intent(google.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 } else {
                     mLoadingBar.dismiss();
                 }
