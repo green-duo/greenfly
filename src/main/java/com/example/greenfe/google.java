@@ -3,6 +3,7 @@ package com.example.greenfe;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -16,12 +17,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class google extends AppCompatActivity {
 
@@ -33,6 +42,7 @@ public class google extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
     ProgressDialog mLoadingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,12 +103,39 @@ public class google extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
                     FirebaseUser user = mAuth.getCurrentUser();
                     User users = new User();
+                    Log.println(Log.INFO, "TAG", "onComplete: " + user.getUid() + " " + user.getDisplayName() + " " + user.getPhotoUrl());
                     users.setUserId(user.getUid());
                     users.setName(user.getDisplayName());
                     users.setProfile(user.getPhotoUrl().toString());
-                    database.getReference().child("Users").child(user.getUid()).setValue(users);
+
+                    // Create a reference to the 'users' collection
+                    DocumentReference userRef = db.collection("users").document("user123");
+
+                    DocumentReference userReff = db.collection("users").document("user123");
+
+// Create a map to store user data
+                    Map<String, Object> userg = new HashMap<>();
+                    userg.put("name", "John Doe");
+                    userg.put("email", "john.doe@example.com");
+                    userg.put("age", 30);
+
+// Save the data to the document
+                    userReff.set(userg)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("Firestore", "Document successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("Firestore", "Error writing document", e);
+                                }
+                            });
                     Intent intent = new Intent(google.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

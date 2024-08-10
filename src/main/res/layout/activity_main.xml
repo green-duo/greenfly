@@ -7,14 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <FrameLayout
+        android:layout_width="445dp"
+        android:layout_height="85dp"
+        android:background="#070707"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="119dp"
+            android:layout_height="71dp"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/home" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
