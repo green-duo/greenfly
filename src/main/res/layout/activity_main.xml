@@ -26,4 +26,12 @@
             app:srcCompat="@drawable/home" />
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/_111028_settings_icon"
+        tools:layout_editor_absoluteX="291dp"
+        tools:layout_editor_absoluteY="606dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
